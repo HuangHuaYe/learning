@@ -100,6 +100,6 @@ Most of the native objects when calling the [valueOf()](https://developer.mozil
 
 参考链接: 
 
-[](https://blog.csdn.net/chenchunlin526/article/details/78850171)
+[The Legend of JavaScript Equality Operator](https://blog.csdn.net/chenchunlin526/article/details/78850171)
 
-[The Legend of JavaScript Equality Operator](https://dmitripavlutin.com/the-legend-of-javascript-equality-operator/#eea-3)
+[](https://dmitripavlutin.com/the-legend-of-javascript-equality-operator/#eea-3)
