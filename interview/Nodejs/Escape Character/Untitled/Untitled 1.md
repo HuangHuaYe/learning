@@ -1,0 +1,3 @@
+# ^
+
+encodeURI: '%5E'
