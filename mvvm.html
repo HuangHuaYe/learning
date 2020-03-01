@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">sadasda</div>
+
+  <script>
+
+    function MVVM(data, el) {
+      this.data = data
+      this.el = document.querySelector(el)
+      observable(this.data)
+      Object.keys(this.data).forEach((key) => {
+         new Watcher(data, key, (val) => {
+          this.el.textContent = val
+        })
+      })
+    } 
+
+    function observable(obj) {
+      Object.keys(obj).forEach(key => {
+        defineReactive(obj, key, obj[key])
+      })
+    }
+
+    function defineReactive(obj, key, val) {
+      const dep = new Dep()
+      Object.defineProperty(obj, key, {
+        get: function () {
+          console.log('getting data')
+          if (Dep.target) {
+            dep.addSubs(Dep.target)
+          }
+          return val
+        },
+        set: function(newVal) {
+          val = newVal
+          dep.notify()
+        }
+      })
+    }
+
+    function Dep() {
+      this.subs = []
+    }
+
+    Dep.prototype.addSubs = function (target) {
+      this.subs.push(target)
+    }
+    Dep.prototype.notify = function () {
+      this.subs.forEach(item => item.update())
+    }
+    Dep.prototype.target = null
+
+    function Watcher(vm, name, callback) {
+      this.data = vm
+      this.name = name
+      this.callback = callback
+      this.value = this.get()
+    }
+    Watcher.prototype = {
+      update: function() {
+        this.run()
+      },
+      run: function() {
+        const value = this.data[this.name]
+        if (value !== this.value) {
+          this.value = value
+          this.callback(value)
+        }
+      },
+      get: function() {
+        Dep.target = this;
+        const value = this.data[this.name]
+        Dep.target = null;
+        return value
+      }
+    }
+
+    const mvvm = new MVVM({name: '123123'}, '#app')
+    
+    console.log(document.querySelector('#app'))
+    setTimeout(() => {
+      mvvm.data.name = 'asdsadasda'
+    }, 2000);
+  </script>
+
+</body>
+
+</html>
